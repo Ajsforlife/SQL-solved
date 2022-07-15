@@ -26,14 +26,13 @@ ORDER BY c.customer_id;
 --2. Retrieve the latest rental date for each title. 
 SELECT DISTINCT ON (f.title)
     f.title,
-    r.rental_date,
-    r.inventory_id,
-    f.film_id
+    r.rental_date
 From inventory as i
 INNER JOIN rental as r
 ON (i.inventory_id = r.inventory_id)
 INNER JOIN film as f
 ON (i.film_id = f.film_id)
+ORDER BY f.title, r.rental_date DESC;
 
 
 --***Hint:** Join the `rental` and `inventory` tables on `inventory_id` and then join the `film` table with the `inventory` table on `film_id`. 
@@ -50,3 +49,9 @@ FROM inventory as i
 FULL OUTER JOIN film as f
 ON (i.film_id = f.film_id)
 WHERE i.film_id isnull;
+
+SELECT film_id, title
+FROM film
+WHERE film_id NOT IN
+    (SELECT film_id
+    FROM inventory);
